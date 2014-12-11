@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selectize Test</title>
+    <link rel="stylesheet" href="bower_components/gumby/css/gumby.css"/>
+    <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.css"/>
+</head>
+
+<body>
+    <div id="outer-wrapper">
+        <div id="inner-wrapper">
+            <div id="content">
+                <div class="row">
+                    <h1>Selectize Test</h1>
+                </div>
+                <div class="row">
+                    <div class="five columns">
+                        <label for="#main-select">Main Administrator <img class="loadIMG"src="loading.gif"/></label>
+                        <select id="main-select" class="chosen-select"></select>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="five columns">
+                        <label for="#add-select">Additional Administrators <img class="loadIMG"src="loading.gif"/></label>
+                        <select id="add-select" multiple></select>
+                    </div>
+                    <div class="two columns">
+                        <button id="reset-admins">Reset</button>
+                    </div>
+                </div>
+                <div class="row">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<style>
+    html {
+        margin: 0;
+        padding: 0;
+    }
+    #outer-wrapper {
+        width: 100%;
+    }
+    #inner-wrapper {
+        width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #content {
+        margin-top: 20px;
+    }
+    #inner-wrapper .row h1 {
+        text-transform: full-width;
+        font-variant: small-caps;
+    }
+    .uname {
+        padding-left: 10px;
+    }
+    .row select {
+        width: 100%;
+    }
+
+    .selectize_item {
+        width: 100%;
+    }
+        .selectize_item .name{
+            color: #000;
+            font-weight: 600;
+        }
+    .selectize_option {
+        width: 100%;
+    }
+        .selectize_option .label {
+            color: #000;
+        }
+    .loadIMG {
+        width: 20px;
+        height: 20px;
+    }
+</style>
+<script src="bower_components/jquery-legacy/jquery.js"></script>
+<script src="bower_components/selectize/dist/js/standalone/selectize.js"></script>
+<script src="bower_components/jquery-mockajax/jquery.mockjax.js"></script>
+<script>
+    "use strict"
+    var url = "hello.asp";
+
+    $.mockjax({
+        url: "hello.asp",
+        proxy:"users.json",
+        responseTime: 5000,
+        dataType: "json"
+    });
+    $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json"
+    }).done(function (response) {
+        $(document).trigger('readyList', [response.users]);
+        $.mockjax.clear();
+    });
+
+    (function ($) {
+
+        var main_admin_container = $('#main-select');
+        var addn_admin_container = $('#add-select');
+        var clear_btn            = $('#reset-admins');
+        var select_main, select_addn;
+        var user_list;
+
+        main_admin_container.css('visibility','hidden');
+        addn_admin_container.css('visibility','hidden');
+
+        $(document).on('readyList', function(e, arg1) {
+           // user_list = arg1;
+            main_admin_container.css('visibility','visibile');
+            addn_admin_container.css('visibility','visible');
+            $('.loadIMG').css('display','none');
+
+            select_main = main_admin_container.selectize({
+                persist: false,
+                valueField: 'uname',
+                labelField: 'name',
+                searchField: ['name','uname'],
+                options: arg1,
+                render : {
+                    option: function (item, escape) {
+                        var label = item.name;
+                        var caption = item.uname;
+
+                        return '<div class="selectize_option">' +
+                                '<span class="label">' + escape(label) + '</span>' + '<span class="caption">' + escape(caption) + '</span>'
+                            +'</div>';
+                    }
+                }
+            });
+
+            select_addn = addn_admin_container.selectize({
+                persist: false,
+                maxItems: null,
+                plugins: ['remove_button'],
+                valueField: 'uname',
+                labelField: 'name',
+                searchField: ['name','uname'],
+                options: arg1,
+                render: {
+                    item: function (item, escape) {
+                        return '<div class="selectize_item">' + (item.name? '<span class="name">' + escape(item.name) +'</span>' : '') +
+                            (item.uname? '<span class="uname">' + escape(item.uname) +'</span>' : '') +
+                            '</div>';
+
+                    },
+                    option: function (item, escape) {
+                        var label = item.name;
+                        var caption = item.uname;
+
+                        return '<div class="selectize_option">' +
+                                '<span class="label">' + escape(label) + '</span>' + '<span class="caption">' + escape(caption) + '</span>'
+                            +'</div>';
+                    }
+                }
+
+            });
+
+            clear_btn.on('click', function (e) {
+                if ( select_addn !== null) {
+                    select_addn[0].selectize.clear();
+                }
+            });
+
+        });
+
+
+    })(jQuery);
+</script>

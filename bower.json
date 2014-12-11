@@ -6,7 +6,10 @@
         "jquery" : "jquery#2",
         "jquery-mockajax": "*",
         "selectize" : "*",
-        "gumby" : "#2.6"
+        "gumby" : "#2.6",
+        "excanvas" : "*",
+        "flot": "*"
+        
     },
     "private" : true
 }
