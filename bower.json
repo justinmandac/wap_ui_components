@@ -3,10 +3,10 @@
     "version": "0.1",
     "dependencies" : {
         "jquery-legacy" : "jquery#1.8",
-        "jquery-modern" : "jquery#2",
+        "jquery" : "jquery#2",
         "jquery-mockajax": "*",
         "selectize" : "*",
-        "gumby" : "~2.6"
+        "gumby" : "#2.6"
     },
     "private" : true
 }
