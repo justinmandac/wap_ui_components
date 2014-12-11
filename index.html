@@ -33,7 +33,30 @@
                     </div>
                 </div>
                 <div class="row">
-
+                    <h1>Flot Test</h1>
+                </div>
+                <div class="row">
+                    <div class="eight columns">
+                        <ul id="series-list">
+                        </ul>
+                    </div>
+                    <div class="four columns">
+                        <select id="time-select">
+                            <option value="7D">7 Days</option>
+                            <option value="30D">30 Days</option>
+                            <option value="90D">90 Days</option>
+                        </select>
+                        <select id="yaxis-select">
+                            <option value="ABS">ABSOLUTE</option>
+                            <option value="REL">RELATIVE</option>
+                        </select>
+                        <span id="refresh-button">REF</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="twelve columns">
+                        <div id="plot-container"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -84,10 +107,75 @@
         width: 20px;
         height: 20px;
     }
+
+    /*FLOT CSS*/
+    #plot-container {
+        min-height: 209px;
+    }
+
+    #series-list li{
+        display: inline-block;
+    }
+
+    .seriesCB {
+        margin-right: 10px;
+        font-size: .7em;
+    }
+    .seriesCB label {
+        margin-right: 5px;
+
+    }
+
+    .seriesCB input[type=checkbox] {
+        display:none;
+    }
+
+    .lab {
+        position:relative;
+        top: 2px;
+        display:inline-block;
+        width: 12px;
+        height: 12px;
+        border: 1px transparent #000;
+        border-radius: 100%;
+        background: #ccc;
+        cursor: pointer;
+        margin-right: 5px;
+        -webkit-user-select:none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    .lab span {
+        position: absolute;
+        width: 8px;
+        height: 4px;
+        background: transparent;
+        top: 3px;
+        left: 2px;
+        border: 2px solid #fff;
+        border-top: none;
+        border-right: none;
+
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    }
+
+    #time-select, #yaxis-select {
+        font-size: .7em;
+    }
 </style>
 <script src="bower_components/jquery-legacy/jquery.js"></script>
 <script src="bower_components/selectize/dist/js/standalone/selectize.js"></script>
 <script src="bower_components/jquery-mockajax/jquery.mockjax.js"></script>
+<script src="bower_components/flot/jquery.flot.js"></script>
+<script src="flot.time.js"></script>
+<script src="color_manager.js"></script>
+<script src="waz_plotter.js"></script>
+<script src="app.js"></script>
 <script>
     "use strict"
     var url = "hello.asp";
